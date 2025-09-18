@@ -2,13 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Clone your GitHub repo
-                git 'https://github.com/ham1a/vue-project'
-            }
-        }
-
+       
         stage('Install Dependencies') {
             steps {
                 // Install project dependencies
