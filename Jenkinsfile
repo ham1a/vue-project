@@ -4,13 +4,48 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                // Clone your GitHub repo
                 git 'https://github.com/ham1a/vue-project'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Install project dependencies
+                sh 'npm install'
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Build commands here'
+                // Build the frontend
+                sh 'npm run build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests if any
+                sh 'npm test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying frontend to Nginx directory'
+        sh '''
+            # Stop Nginx (optional if needed)
+            sudo systemctl stop nginx
+
+            # Copy build files to Nginx default folder
+            sudo cp -r dist/* /usr/share/nginx/html/
+
+            # Set correct permissions
+            sudo chown -R nginx:nginx /usr/share/nginx/html/
+
+            # Start Nginx
+            sudo systemctl start nginx
+        '''
             }
         }
     }
